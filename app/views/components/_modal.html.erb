@@ -6,17 +6,40 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Chat As?</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <%= form_with url: createUser_path, data: { turbo: false }, id: "form", html: { onsubmit: "saveUser(event)" } do |form| %>
       <div class="modal-body">
-        <form action="" method="post">
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Your name</label>
-                <input type="text" class="form-control" placeholder="John Smith" required>
-            </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Your name</label>
+          <input type="text" name="username" class="form-control" placeholder="John Smith" required>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-success w-100">Continue</button>
-        </form>
       </div>
+      <% end %>
     </div>
   </div>
 </div>
+<script>
+  function saveUser(event) {
+    event.preventDefault();
+    const url = "<%= createUser_path %>";
+    const form = new FormData(event.target);
+    const username = form.get("username");
+    const authenticity_token = form.get("authenticity_token");
+    $.ajax({
+        url: url,
+        data: {
+            'username': username,
+            'authenticity_token': authenticity_token
+        },
+        success: function(data) {
+          // console.log(data);
+          $('#modalUser').modal('hide');
+          document.getElementById('msg_box').disabled = false;
+          document.getElementById('msg_box_button').disabled = false;
+        },
+        method: 'post'
+    });
+    }
+</script>

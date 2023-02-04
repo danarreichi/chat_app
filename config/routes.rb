@@ -5,4 +5,7 @@ Rails.application.routes.draw do
   # root "articles#index"
   resources :layouts
   get "home", to: "main#home"
+
+  # Create new user
+  post "createUser", to: "main#createUser"
 end
