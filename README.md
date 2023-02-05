@@ -18,6 +18,7 @@ application up and running.
 # 1st time installation
 
 * Download this project as a zip and extract it somewhere
+![image](https://user-images.githubusercontent.com/61612953/216820129-0821bd82-8d4d-4aa2-9e9c-76002d67a1c7.png)
 
 * Open the extraction folder from terminal/cmd and run "bundle"
 
