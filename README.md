@@ -3,22 +3,12 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+# REQUIREMENTS
 
-* Ruby version
+* Ruby 3.1
 
-* System dependencies
+* Rails 7.0.4.2
 
-* Configuration
+* SQLite3 3.40.1
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Node v18.7.0
