@@ -13,6 +13,8 @@ application up and running.
 
 * Node v18.7.0
 
+* Internet connection for CDN to be loaded
+
 # 1st time installation
 
 * Download this project as a zip and extract it somewhere
