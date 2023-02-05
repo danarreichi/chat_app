@@ -1,5 +1,25 @@
 <nav class="navbar navbar-dark navbar-expand-lg bg-success">
     <div class="container-fluid">
       <a class="navbar-brand ms-3" href="#">Chat App</a>
+      <button class="navbar-toggler" id="btn_toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" data-state="off" id="navbarTogglerDemo03">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 w-25">
+        <button class="btn btn-outline-light me-4 w-100" id="chatAs_btn" onclick="showModal()" type="submit">Chat as?</button>
+      </ul>
+    </div>
     </div>
   </nav>
+  <script>
+    function setmt(el_id){
+      state = document.getElementById(el_id).getAttribute('data-state')
+      if(state == "off"){
+        document.getElementById(el_id).setAttribute('data-state', 'on');
+        document.getElementById(el_id).classList.add('mt-4');
+      } else {
+        document.getElementById(el_id).setAttribute('data-state', 'off');
+        document.getElementById(el_id).classList.remove('mt-4');
+      }
+    }
+  </script>

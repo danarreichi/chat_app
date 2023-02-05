@@ -1,28 +1,157 @@
 
-    <div class="card text-center">
-        <div class="card-header">
+    <div class="card text-center mt-4">
+        <h5 class="card-header">
             Available Rooms
-        </div>
+        </h5>
         <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <table id="table"
+                data-toggle="table"
+                data-buttons="buttons">
+                <thead>
+                  <tr>
+                    <th data-field="id">No</th>
+                    <th data-field="name">Room Name</th>
+                    <th data-field="price">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="roomList">
+                    <% @i = 1 %>
+                    <% @rooms.each do |room| %>
+                    <tr>
+                        <td><%= @i %></td>
+                        <td><%= room.room_name %></td>
+                        <td>
+                            <button type="button" onclick="getMessage(this)" data-id="<%= room.id %>" class="btn btn-outline-success w-75 enterBtn" disabled>Select</button>
+                        </td>
+                    </tr>
+                    <% @i += 1 %>
+                    <% end %>
+                </tbody>
+              </table>
         </div>
     </div>
 
     <div class="card text-center mt-4">
-        <div class="card-header">
+        <h5 class="card-header" id="chatHeader">
             Chat - Room
-        </div>
-        <div class="card-body">
-            <p class="card-text text-secondary">It's empty here</p>
+        </h5>
+        <div class="card-body text-center" id="chat">
+            <p class="card-text text-secondary" id="empty_chat">It's empty here</p>
         </div>
         <div class="card-footer">
-            <form method="post">
+            <%= form_with url: home_path, data: { turbo: false }, id: "form_message", html: { onsubmit: "sendMessage(event)" } do |form| %>
                 <div class="input-group">
-                    <input id="msg_box" class="form-control" type="text" placeholder="Recipient's username" aria-label="Type a message" aria-describedby="button-addon2" disabled required>
+                    <input type="hidden" name="room_id" id="room_id" required>
+                    <input id="msg_box" name="message" class="form-control" type="text" placeholder="Type some message" aria-label="Type a message" aria-describedby="button-addon2" disabled required>
                     <button id="msg_box_button" class="btn btn-success px-4" type="submit" disabled><i class="bi bi-send-fill me-2"></i>Send</button>
                   </div>
-            </form>
+            <% end %>
         </div>
     </div>
+
+    <script>
+        function buttons() {
+            return {
+                btnPrint: {
+                    text: 'Highlight Users',
+                    icon: 'bi bi-plus-circle-fill',
+                    event: function() {
+                        $('#modalRoom').modal('show');
+                    },
+                    attributes: {
+                        title: 'Create a new room',
+                        disabled: true,
+                        id: 'addRoomButton'
+                    }
+                }
+            }
+        }
+
+        function enableBtn(){
+            btn = document.getElementsByClassName('enterBtn').length;
+            for (let i = 0; i < btn; i++) {
+                document.getElementsByClassName('enterBtn')[i].disabled = false;
+                document.getElementsByClassName('enterBtn')[i].innerHTML = "Select";
+                document.getElementsByClassName('enterBtn')[i].classList.add("btn-outline-success");
+                document.getElementsByClassName('enterBtn')[i].classList.remove("btn-success");
+            }
+        }
+
+        function getMessage(element){
+            const id = element.getAttribute('data-id');
+            const url = "<%= selectRoom_path %>";
+            $.ajax({
+                url: url,
+                data: {
+                    'id': id
+                },
+                success: function(data) {
+                    message = data['roomMessage'];
+                    rooms = data['rooms'];
+
+                    // btnActive
+                    enableBtn();
+                    element.classList.add("btn-success");
+                    element.classList.remove("btn-outline-success");
+                    element.innerHTML = "Selected";
+                    // endBtnActive
+
+                    // get the parent element
+                    document.getElementById('room_id').value = id;
+                    for (let i = 0; i < rooms.length; i++) {
+                        if(rooms[i]['id'] == id) {
+                            document.getElementById('chatHeader').innerHTML = data.rooms[i]['room_name'];
+                        }
+                    }
+                    var parentDiv = document.getElementById("chat");
+                    parentDiv.innerHTML = "";
+                    parentDiv.setAttribute("data-id", id);
+
+                    if(!(message.length > 0)){
+                        parentDiv.innerHTML = parentDiv.innerHTML + `<p class="card-text text-secondary" id="empty_chat">It's empty here</p>`;
+                        parentDiv.classList.remove('text-start')
+                        parentDiv.classList.remove('text-center')
+                        parentDiv.classList.add('text-center')
+                    } else {
+                        parentDiv.classList.remove('text-start')
+                        parentDiv.classList.remove('text-center')
+                        parentDiv.classList.add('text-start')
+                    }
+
+                    // create the new element
+                    for(let i = 0; i < message.length; i++){
+                        parentDiv.innerHTML = parentDiv.innerHTML + 
+                            `<div class="card text-bg-success mb-2">
+                                <div class="card-body">` + 
+                                    message[i].message
+                                + `</div>
+                            </div>`;
+                    }
+                    
+                    document.getElementById('msg_box').disabled = false;
+                    document.getElementById('msg_box_button').disabled = false;
+                }
+            });
+        }
+
+        function sendMessage(event){
+            event.preventDefault();
+            const url = "<%= home_path %>";
+            const form = new FormData(event.target);
+            const message = form.get("message");
+            const room_id = form.get("room_id");
+            const authenticity_token = form.get("authenticity_token");
+            $.ajax({
+                url: url,
+                data: {
+                    'message': message,
+                    'room_id': room_id,
+                    'authenticity_token': authenticity_token
+                },
+                success: function(data) {
+                    // console.log(data);
+                },
+                method: 'post'
+            });
+        }
+    </script>

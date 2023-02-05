@@ -1,16 +1,16 @@
 <!-- Modal -->
-<div class="modal fade" id="modalUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalRoom" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Chat As?</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Create a new room</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <%= form_with url: createUser_path, data: { turbo: false }, id: "form", html: { onsubmit: "saveUser(event)" } do |form| %>
+      <%= form_with url: createRoom_path, data: { turbo: false }, id: "form", html: { onsubmit: "saveRoom(event)" } do |form| %>
       <div class="modal-body">
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Your name</label>
-          <input type="text" name="username" class="form-control" placeholder="John Smith" required>
+          <label for="exampleFormControlInput1" class="form-label">Room name</label>
+          <input type="text" name="room_name" class="form-control" placeholder="Good room" required>
         </div>
       </div>
       <div class="modal-footer">
@@ -21,28 +21,25 @@
   </div>
 </div>
 <script>
-  function saveUser(event) {
+  function saveRoom(event) {
     event.preventDefault();
-    const url = "<%= createUser_path %>";
+    const url = "<%= createRoom_path %>";
     const form = new FormData(event.target);
-    const username = form.get("username");
+    const room_name = form.get("room_name");
     const authenticity_token = form.get("authenticity_token");
     $.ajax({
         url: url,
         data: {
-            'username': username,
+            'room_name': room_name,
             'authenticity_token': authenticity_token
         },
         success: function(data) {
           // console.log(data);
-          $('#modalUser').modal('hide');
+          $('#modalRoom').modal('hide');
           let btnLength = document.getElementsByClassName('enterBtn').length;
           for(let i = 0; i < btnLength; i++) {
             document.getElementsByClassName('enterBtn')[i].disabled = false;
           }
-          log = 1;
-          document.getElementById('addRoomButton').disabled = false;
-          document.getElementById('chatAs_btn').innerHTML = data.username;
         },
         method: 'post'
     });

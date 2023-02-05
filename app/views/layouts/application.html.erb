@@ -16,22 +16,37 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <!-- end jQuery3 -->
 
+    <!-- bootstrap-table -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
+    <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+    <!-- end bootstrap-table -->
+
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
+  <script>
+    var log = 0;
+  </script>
   <body>
     <%= render partial: "components/navbar" %>
-    <div class="container mt-4">
+    <div class="d-flex flex-column mx-4">
       <%= yield %>
     </div>
     <%= render partial: "components/modal" %>
+    <%= render partial: "components/modalRoom" %>
   </body>
 </html>
 
 <script>
-  const toastLiveExample = document.getElementById('liveToast');
-  $(document).ready(function(){
+  $("#modalUser").on('hide.bs.modal', function() {
+    document.getElementById('chatAs_btn').disabled = false;
+  })
+  function showModal(){
+    document.getElementById('chatAs_btn').disabled = true;
     $('#modalUser').modal('show');
+  }
+  $(document).ready(function(){
+    showModal();
   });
 </script>
