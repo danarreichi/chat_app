@@ -21,8 +21,6 @@ application up and running.
 
 * after long listed depedency has been installed, run "rails db:migrate"
 
-* after long listed depedency has been installed, run "rails db:migrate"
-
 * open new terminal/cmd and cd into "project_folder/client/" and run "npm install"
 
 * after npm modules has been installed, run "npm run dev"
