@@ -16,11 +16,11 @@ consumer.subscriptions.create("GetmessageChannel", {
       document.getElementById("msg_box").value = "";
       try{
         document.getElementById('empty_chat').remove();
+        parentDiv.classList.remove('text-center')
+        parentDiv.classList.add('text-start')
       } catch(error){
         console.log("Element already removed, ignoring error:", error);
       }
-      parentDiv.classList.remove('text-center')
-      parentDiv.classList.add('text-start')
       if(data['new_message']['room_id'] == parentDiv.getAttribute('data-id')){
         parentDiv.innerHTML = parentDiv.innerHTML + 
         `<div class="card text-bg-success mb-2">
