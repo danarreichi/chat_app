@@ -29,6 +29,5 @@ class MainController < ApplicationController
         @rooms = Room.all
         @roomMessage = Message.where(room_id: params[:id])
         render json: {roomMessage: @roomMessage, rooms: @rooms}
-        # ActionCable.server.broadcast 'GetmessageChannel', {room_id: params[:id], user_id: session[:user_id], user_name: session[:user_name]}
     end
 end
