@@ -90,6 +90,8 @@
                     message = data['roomMessage'];
                     rooms = data['rooms'];
 
+                    // console.log(message);
+
                     // btnActive
                     enableBtn();
                     element.classList.add("btn-success");
@@ -124,11 +126,10 @@
                         parentDiv.innerHTML = parentDiv.innerHTML + 
                             `<div class="card text-bg-success mb-2">
                                 <div class="card-body">` + 
-                                    message[i].message
+                                message[i].username +`: `+  message[i].message
                                 + `</div>
                             </div>`;
                     }
-                    
                     document.getElementById('msg_box').disabled = false;
                     document.getElementById('msg_box_button').disabled = false;
                 }

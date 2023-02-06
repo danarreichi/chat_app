@@ -22,12 +22,13 @@ class MainController < ApplicationController
     def sendMessage
         @insert = Message.create({room_id: params[:room_id], message: params[:message], user_id: session[:user_id]})
         @message = {room_id: params[:room_id], message: params[:message], user_id: session[:user_id]}
-        ActionCable.server.broadcast 'GetmessageChannel', {new_message: @message}
+        @user = User.find(session[:user_id])
+        ActionCable.server.broadcast 'GetmessageChannel', {new_message: @message, user: @user}
     end
 
     def selectRoom
         @rooms = Room.all
-        @roomMessage = Message.where(room_id: params[:id])
+        @roomMessage = Message.joins(:user).select('messages.*, users.username').where(room_id: params[:id])
         render json: {roomMessage: @roomMessage, rooms: @rooms}
     end
 end

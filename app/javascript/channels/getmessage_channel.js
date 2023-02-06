@@ -25,7 +25,7 @@ consumer.subscriptions.create("GetmessageChannel", {
         parentDiv.innerHTML = parentDiv.innerHTML + 
         `<div class="card text-bg-success mb-2">
             <div class="card-body">` + 
-            data['new_message']['message']
+            data['user'].username +`: `+data['new_message']['message']
             + `</div>
         </div>`;
       }
